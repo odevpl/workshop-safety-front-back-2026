@@ -18,8 +18,7 @@ export function search(req, res, next) {
 
 export function create(req, res, next) {
   try {
-    // WORKSHOP: a fixed author makes the endpoint usable before authentication is added.
-    res.status(201).json(publishPost({ ...req.body, authorId: 1 }));
+    res.status(201).json(publishPost({ ...req.body, authorId: req.user.id }));
   } catch (error) {
     next(error);
   }

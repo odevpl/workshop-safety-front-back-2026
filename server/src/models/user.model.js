@@ -9,7 +9,6 @@ export function findUserByEmail(email) {
   return db.prepare('SELECT id, email, password, display_name FROM users WHERE email = ?').get(email);
 }
 
-export function findAllUsers() {
-  // WORKSHOP: exposes sensitive data; retained only as an audit exercise target.
-  return db.prepare('SELECT id, email, password, display_name FROM users').all();
+export function findUserById(id) {
+  return db.prepare('SELECT id, email, display_name FROM users WHERE id = ?').get(id);
 }

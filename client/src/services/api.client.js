@@ -19,6 +19,7 @@ export function login(credentials) {
   return request("/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify(credentials),
   });
 }
@@ -35,6 +36,7 @@ export function createPost(post) {
   return request("/posts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify(post),
   });
 }

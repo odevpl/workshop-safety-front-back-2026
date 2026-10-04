@@ -1,14 +1,13 @@
 import { db } from '../config/database.js';
 
 export function createUser({ email, password, displayName }) {
-  // WORKSHOP: intentionally vulnerable SQL construction for the input-validation and SQL-injection exercises.
-  return db.prepare(`INSERT INTO users (email, password, display_name) VALUES ('${email}', '${password}', '${displayName}')`)
-    .run();
+  return db.prepare('INSERT INTO users (email, password, display_name) VALUES (?, ?, ?)')
+    .run(email, password, displayName);
 }
 
 export function findUserForLogin(email, password) {
-  // WORKSHOP: intentionally vulnerable SQL construction for the SQL-injection exercise.
-  return db.prepare(`SELECT id, email, display_name FROM users WHERE email = '${email}' AND password = '${password}'`).get();
+  return db.prepare('SELECT id, email, display_name FROM users WHERE email = ? AND password = ?')
+    .get(email, password);
 }
 
 export function findAllUsers() {

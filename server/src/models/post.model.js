@@ -8,12 +8,10 @@ export function findAllPosts() {
 }
 
 export function searchPosts(term) {
-  // WORKSHOP: intentionally vulnerable SQL construction for the SQL-injection exercise.
-  return db.prepare(`SELECT id, title, body FROM posts WHERE title LIKE '%${term}%'`).all();
+  return db.prepare('SELECT id, title, body FROM posts WHERE title LIKE ?').all(`%${term}%`);
 }
 
 export function createPost({ title, body, authorId }) {
-  // WORKSHOP: intentionally vulnerable SQL construction for the input-validation and SQL-injection exercises.
-  return db.prepare(`INSERT INTO posts (title, body, author_id) VALUES ('${title}', '${body}', ${authorId})`)
-    .run();
+  return db.prepare('INSERT INTO posts (title, body, author_id) VALUES (?, ?, ?)')
+    .run(title, body, authorId);
 }

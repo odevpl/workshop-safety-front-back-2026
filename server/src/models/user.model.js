@@ -5,9 +5,8 @@ export function createUser({ email, password, displayName }) {
     .run(email, password, displayName);
 }
 
-export function findUserForLogin(email, password) {
-  return db.prepare('SELECT id, email, display_name FROM users WHERE email = ? AND password = ?')
-    .get(email, password);
+export function findUserByEmail(email) {
+  return db.prepare('SELECT id, email, password, display_name FROM users WHERE email = ?').get(email);
 }
 
 export function findAllUsers() {

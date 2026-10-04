@@ -1,7 +1,6 @@
 import cors from 'cors';
 import express from 'express';
 import { authRouter } from './routes/auth.routes.js';
-import { debugRouter } from './routes/debug.routes.js';
 import { healthRouter } from './routes/health.routes.js';
 import { postsRouter } from './routes/posts.routes.js';
 import { errorHandler } from './middleware/error-handler.middleware.js';
@@ -15,7 +14,6 @@ app.use(express.json());
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/posts', postsRouter);
-app.use('/api/debug', debugRouter);
 
 // WORKSHOP: technical internals are exposed to clients.
 app.use(errorHandler);

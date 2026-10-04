@@ -1,4 +1,5 @@
 import Database from 'better-sqlite3';
+import bcrypt from 'bcrypt';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,7 +10,7 @@ mkdirSync(dataDirectory, { recursive: true });
 
 export const db = new Database(join(dataDirectory, 'workshop.db'));
 
-export function initializeDatabase() {
+export async function initializeDatabase() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,9 +28,15 @@ export function initializeDatabase() {
   `);
 
   if (!db.prepare('SELECT id FROM users WHERE email = ?').get('alice@example.test')) {
-    // WORKSHOP: plaintext password is intentionally insecure.
+    const passwordHash = await bcrypt.hash('alice123', 12);
     db.prepare('INSERT INTO users (email, password, display_name) VALUES (?, ?, ?)')
-      .run('alice@example.test', 'alice123', 'Alicja');
+      .run('alice@example.test', passwordHash, 'Alicja');
+  }
+
+  const plaintextUsers = db.prepare("SELECT id, password FROM users WHERE password NOT LIKE '$2%'").all();
+  const updatePassword = db.prepare('UPDATE users SET password = ? WHERE id = ?');
+  for (const user of plaintextUsers) {
+    updatePassword.run(await bcrypt.hash(user.password, 12), user.id);
   }
 
   if (!db.prepare('SELECT id FROM posts LIMIT 1').get()) {

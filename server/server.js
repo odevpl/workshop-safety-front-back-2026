@@ -3,7 +3,7 @@ import { initializeDatabase } from './src/config/database.js';
 
 const PORT = process.env.PORT || 3001;
 
-initializeDatabase();
+await initializeDatabase();
 
 app.listen(PORT, () => {
   console.log(`API listening on http://localhost:${PORT}`);

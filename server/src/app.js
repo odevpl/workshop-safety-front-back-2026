@@ -6,9 +6,16 @@ import { postsRouter } from './routes/posts.routes.js';
 import { errorHandler } from './middleware/error-handler.middleware.js';
 
 const app = express();
+const allowedOrigins = ['http://localhost:5173'];
 
-// WORKSHOP: every origin is permitted; no Helmet headers are configured.
-app.use(cors());
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(null, false);
+  },
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+}));
 app.use(express.json());
 
 app.use('/api/health', healthRouter);

@@ -14,7 +14,8 @@ export function ActivityPage({ posts }) {
             <b>↗</b>
             <div>
               <h3>{post.title || "Dyspozycja bez tytułu"}</h3>
-              <p>{post.body}</p>
+                {/* WORKSHOP: intentionally unsafe rendering for the Stored XSS demonstration. */}
+                <p dangerouslySetInnerHTML={{ __html: post.body }} />
               <small>
                 {post.author} · {post.created_at}
               </small>

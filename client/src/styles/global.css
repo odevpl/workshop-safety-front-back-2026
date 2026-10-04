@@ -267,6 +267,7 @@ button {
   color: #73838b;
   font-size: 0.74rem;
 }
+.field-error { color: #b42318; font-size: .78rem; font-weight: 600; }
 .message {
   background: #e8f7f1;
   color: #176e57;

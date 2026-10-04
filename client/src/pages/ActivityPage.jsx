@@ -1,3 +1,5 @@
+import { SafeHtml } from '../components/SafeHtml.jsx';
+
 export function ActivityPage({ posts }) {
   return (
     <>
@@ -14,8 +16,7 @@ export function ActivityPage({ posts }) {
             <b>↗</b>
             <div>
               <h3>{post.title || "Dyspozycja bez tytułu"}</h3>
-                {/* WORKSHOP: intentionally unsafe rendering for the Stored XSS demonstration. */}
-                <p dangerouslySetInnerHTML={{ __html: post.body }} />
+                <SafeHtml html={post.body} />
               <small>
                 {post.author} · {post.created_at}
               </small>

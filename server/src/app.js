@@ -10,7 +10,7 @@ import { postsRouter } from './routes/posts.routes.js';
 import { errorHandler } from './middleware/error-handler.middleware.js';
 
 const app = express();
-const allowedOrigins = ['http://localhost:5173'];
+const allowedOrigins = [env.clientUrl];
 
 app.use(helmet());
 app.use(cors({

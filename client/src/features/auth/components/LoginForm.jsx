@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "../../../config/api.config.js";
 
 export function LoginForm({ onLogin, user }) {
   const [credentials, setCredentials] = useState({
@@ -35,6 +36,7 @@ export function LoginForm({ onLogin, user }) {
       </label>
       <button>Zaloguj się</button>
       {user && <small>Aktywny użytkownik: {user.email}</small>}
+      <a href={`${API_URL}/auth/google`}>Kontynuuj z Google</a>
     </form>
   );
 }

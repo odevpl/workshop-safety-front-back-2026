@@ -16,7 +16,8 @@ export async function initializeDatabase() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
-      display_name TEXT NOT NULL
+      display_name TEXT NOT NULL,
+      google_id TEXT UNIQUE
     );
     CREATE TABLE IF NOT EXISTS posts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,6 +27,12 @@ export async function initializeDatabase() {
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
   `);
+
+  const userColumns = db.prepare('PRAGMA table_info(users)').all();
+  if (!userColumns.some((column) => column.name === 'google_id')) {
+    db.exec('ALTER TABLE users ADD COLUMN google_id TEXT');
+    db.exec('CREATE UNIQUE INDEX IF NOT EXISTS users_google_id_unique ON users(google_id)');
+  }
 
   if (!db.prepare('SELECT id FROM users WHERE email = ?').get('alice@example.test')) {
     const passwordHash = await bcrypt.hash('alice123', 12);

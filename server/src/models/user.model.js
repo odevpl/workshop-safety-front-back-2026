@@ -12,3 +12,18 @@ export function findUserByEmail(email) {
 export function findUserById(id) {
   return db.prepare('SELECT id, email, display_name FROM users WHERE id = ?').get(id);
 }
+
+export function findUserByGoogleId(googleId) {
+  return db.prepare('SELECT id, email, display_name FROM users WHERE google_id = ?').get(googleId);
+}
+
+export function linkGoogleAccount(userId, googleId) {
+  return db.prepare('UPDATE users SET google_id = ? WHERE id = ?').run(googleId, userId);
+}
+
+export function createGoogleUser({ email, password, displayName, googleId }) {
+  return db.prepare(`
+    INSERT INTO users (email, password, display_name, google_id)
+    VALUES (?, ?, ?, ?)
+  `).run(email, password, displayName, googleId);
+}

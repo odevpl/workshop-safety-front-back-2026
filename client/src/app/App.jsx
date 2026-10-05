@@ -3,6 +3,7 @@ import { LoginForm } from "../features/auth/components/LoginForm.jsx";
 import { RegisterForm } from "../features/auth/components/RegisterForm.jsx";
 import {
   createPost,
+  getCurrentUser,
   getPosts,
   login,
   register,
@@ -40,6 +41,9 @@ export function App() {
   };
   useEffect(() => {
     loadPosts();
+    getCurrentUser()
+      .then(({ user: sessionUser }) => setUser(sessionUser))
+      .catch(() => setUser(null));
     const onHash = () => setRoute(getRoute());
     addEventListener("hashchange", onHash);
     return () => removeEventListener("hashchange", onHash);

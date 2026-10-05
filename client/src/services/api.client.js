@@ -15,6 +15,10 @@ export function getPosts() {
   return request("/posts");
 }
 
+export function getCurrentUser() {
+  return request("/auth/me", { credentials: "include" });
+}
+
 export function login(credentials) {
   return request("/auth/login", {
     method: "POST",
